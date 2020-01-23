@@ -38,6 +38,9 @@ defmodule Honeydew.EctoSource.SQL do
           Ecto.Adapters.Postgres ->
             Postgres
 
+          Ecto.Adapters.CockroachDB ->
+            Postgres
+
           unsupported ->
             raise ArgumentError, unsupported_adapter_error(unsupported)
         end
