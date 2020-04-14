@@ -1,8 +1,8 @@
 language: elixir
 elixir:
-  - 1.10
+  - 1.8
 otp_release:
-  - 22.3
+  - 21.3
 # matrix:
 #   exclude:
 #     - otp_release: 20.3
@@ -33,6 +33,7 @@ before_script:
   - cd examples/ecto_poll_queue && MIX_ENV=cockroach mix dialyzer --plt && cd -
   - cd examples/ecto_poll_queue && MIX_ENV=postgres  mix do deps.get, compile --warnings-as-errors && cd -
   - cd examples/ecto_poll_queue && MIX_ENV=postgres  mix dialyzer --plt && cd -
+  - mix local.hex --force
   - MIX_ENV=test mix dialyzer --plt
   - cd cockroach-v2.0.0.linux-amd64 && ./cockroach sql --insecure --host=localhost --execute "create database postgres" && cd -
   - psql -c 'create database honeydew_test;' -U postgres
