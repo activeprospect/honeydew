@@ -1,8 +1,8 @@
 language: elixir
 elixir:
-  - 1.8
+  - 1.10
 otp_release:
-  - 21.3
+  - 22.3
 # matrix:
 #   exclude:
 #     - otp_release: 20.3
@@ -28,6 +28,9 @@ before_install:
 
 before_script:
   - epmd -daemon
+  - mix local.hex --force
+  - mix deps.get --only test
+  - mix deps.clean --unused
   - MIX_ENV=test mix compile --warnings-as-errors
   - cd examples/ecto_poll_queue && MIX_ENV=cockroach mix do deps.get, compile --warnings-as-errors && cd -
   - cd examples/ecto_poll_queue && MIX_ENV=cockroach mix dialyzer --plt && cd -

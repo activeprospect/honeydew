@@ -58,7 +58,8 @@ if Code.ensure_loaded?(Ecto) do
 
     @impl true
     def status(state) do
-      "SELECT COUNT(IF(#{state.lock_field} IS NOT NULL, 1, NULL)) AS count,
+      """
+      SELECT COUNT(#{state.lock_field}) AS count,
 
               COUNT(IF(#{state.lock_field} = #{EctoSource.abandoned()}, 1, NULL)) AS abandoned,
 
@@ -77,7 +78,9 @@ if Code.ensure_loaded?(Ecto) do
               COUNT(IF(
                 #{now()} < #{state.lock_field} AND #{state.lock_field} <= #{reserve_at(state)},
               1, NULL)) AS in_progress
-      FROM #{state.table}"
+      FROM #{state.table}
+      WHERE #{state.lock_field} IS NOT NULL
+      """
     end
 
     @impl true
